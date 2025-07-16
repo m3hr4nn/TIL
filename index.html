@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Today I Learned</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: sans-serif; padding: 2rem; max-width: 800px; margin: auto; background: #f4f4f4; }
+    .entry { background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .entry h2 { margin: 0 0 0.3rem 0; font-size: 1.2rem; }
+    .entry small { color: #555; }
+    .entry a { display: inline-block; margin-top: 0.5rem; color: #0077cc; text-decoration: none; font-weight: bold; }
+    .entry a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>📘 Today I Learned</h1>
+  <div id="entries">Loading...</div>
+
+  <script>
+    fetch("posts.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("entries");
+        container.innerHTML = "";
+
+        data.forEach(post => {
+          const div = document.createElement("div");
+          div.className = "entry";
+          div.innerHTML = `
+            <h2>${post.date} - ${post.title}</h2>
+            <small>📁 ${post.folder}</small>
+            <p>${post.preview}</p>
+            <a href="${post.url}" target="_blank">See more…</a>
+          `;
+          container.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>
