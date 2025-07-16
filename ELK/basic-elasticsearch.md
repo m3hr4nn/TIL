@@ -16,5 +16,5 @@ curl -u user:pass -XGET 'localhost:9200/_cat/indices?v'
 
 * health of the cluster:
 ``` bash
-curl -u elastic:1GX22HEK -XGET 'localhost:9200/_cluster/health?pretty=true'
+curl -u elastic:pass -XGET 'localhost:9200/_cluster/health?pretty=true'
 ```
