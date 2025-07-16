@@ -1,33 +1,126 @@
+#!/usr/bin/env python3
+
 import os
-from pathlib import Path
+import glob
+import re
+import json
 from datetime import datetime
+from pathlib import Path
+import frontmatter
 
-REPO_URL = "https://github.com/m3hr4nn/TIL/blob/main"
+def extract_title_and_content(filepath):
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Parse frontmatter
+        try:
+            post = frontmatter.loads(content)
+            title = post.metadata.get('title', '')
+            body = post.content
+            date = post.metadata.get('date', '')
+        except:
+            body = content
+            title = ''
+            date = ''
+        
+        # Fallback title
+        if not title:
+            title_match = re.search(r'^#\s+(.+)', body, re.MULTILINE)
+            title = title_match.group(1).strip() if title_match else Path(filepath).stem.replace('-', ' ').title()
+        
+        # Content preview
+        lines = body.split('\n')
+        content_lines = []
+        skip_title = False
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith('#') and not skip_title:
+                skip_title = True
+                continue
+            if line and not line.startswith('#'):
+                content_lines.append(line)
+                if len(content_lines) >= 3:
+                    break
+        preview = ' '.join(content_lines[:3])
+        preview = preview[:147] + '...' if len(preview) > 150 else preview
+        
+        # Date fallback from file
+        if not date:
+            mtime = os.path.getmtime(filepath)
+            date = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+        
+        return title, preview, date
+    except Exception as e:
+        print(f"Error processing {filepath}: {e}")
+        return None, None, None
 
-def get_note_info(md_path):
-    # Get date from file modification time
-    date = datetime.fromtimestamp(md_path.stat().st_mtime).strftime('%Y-%m-%d')
-    # Title: filename without extension
-    title = md_path.parent.name + '/' + md_path.stem
-    # Read first 2-3 non-empty lines
-    with md_path.open(encoding='utf-8') as f:
-        lines = [line.strip() for line in f if line.strip()]
-    preview = '\n'.join(lines[:3])
-    # Build GitHub link
-    rel_path = md_path.relative_to(Path.cwd())
-    link = f"{REPO_URL}/{rel_path.as_posix()}"
-    return f"- **{date} – {title}**  \n{preview}  \n[see more...]({link})\n"
-
-def main():
-    notes = []
-    for md_path in Path('.').rglob('*.md'):
-        if md_path.name == 'README.md':
+def get_all_md_files():
+    md_files = []
+    for root, dirs, files in os.walk('.'):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        if root == '.':
             continue
-        notes.append(get_note_info(md_path))
-    notes.sort(reverse=True)  # Optional: newest first
-    with open('../README.md', 'w', encoding='utf-8') as f:
-        f.write("## Today I Learned\n\n")
-        f.write('\n'.join(notes))
+        for file in files:
+            if file.endswith('.md') and file.lower() != 'readme.md':
+                md_files.append(os.path.join(root, file))
+    return md_files
+
+def generate_readme_and_json():
+    md_files = get_all_md_files()
+    entries = []
+
+    for filepath in md_files:
+        title, preview, date = extract_title_and_content(filepath)
+        if title and preview:
+            clean_path = filepath.replace(os.sep, '/').lstrip('./')
+            folder = clean_path.split('/')[0]
+            github_url = f"https://github.com/m3hr4nn/TIL/blob/main/{clean_path}"
+
+            entries.append({
+                'title': title,
+                'preview': preview,
+                'date': date,
+                'folder': folder,
+                'url': github_url,
+                'filepath': clean_path
+            })
+
+    entries.sort(key=lambda x: x['date'], reverse=True)
+
+    # Generate README.md
+    readme = """# Today I Learned (TIL)
+
+> A collection of things I learn every day across a variety of languages and technologies.
+
+## Recent Entries
+
+"""
+    for entry in entries:
+        readme += f"### {entry['date']} - {entry['title']}\n\n"
+        readme += f"{entry['preview']}\n\n"
+        readme += f"[**See more...**]({entry['url']})\n\n"
+        readme += "---\n\n"
+
+    readme += f"""## Stats
+
+- **Total entries:** {len(entries)}
+- **Last updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+---
+
+_This README is automatically generated from the markdown files in this repository._
+"""
+
+    with open("README.md", "w", encoding="utf-8") as f:
+        f.write(readme)
+    
+    with open("posts.json", "w", encoding="utf-8") as f:
+        json.dump(entries, f, indent=2)
+
+    print("README.md and posts.json generated.")
 
 if __name__ == "__main__":
-    main()
+    generate_readme_and_json()
