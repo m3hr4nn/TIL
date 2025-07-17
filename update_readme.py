@@ -84,7 +84,7 @@ def generate_readme_and_json():
                 'filepath': clean_path
             })
 
-    entries.sort(key=lambda x: x['date'], reverse=True)
+    entries.sort(key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d %H:%M'), reverse=True)
 
     # Build README content
     readme_content = """# Today I Learned (TIL)
