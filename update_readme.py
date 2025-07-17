@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import glob
 import re
 import json
 from datetime import datetime
@@ -12,8 +11,7 @@ def extract_title_and_content(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        # Parse frontmatter
+
         try:
             post = frontmatter.loads(content)
             title = post.metadata.get('title', '')
@@ -23,13 +21,11 @@ def extract_title_and_content(filepath):
             body = content
             title = ''
             date = ''
-        
-        # Fallback title
+
         if not title:
             title_match = re.search(r'^#\s+(.+)', body, re.MULTILINE)
             title = title_match.group(1).strip() if title_match else Path(filepath).stem.replace('-', ' ').title()
-        
-        # Content preview
+
         lines = body.split('\n')
         content_lines = []
         skip_title = False
@@ -46,12 +42,11 @@ def extract_title_and_content(filepath):
                     break
         preview = ' '.join(content_lines[:3])
         preview = preview[:147] + '...' if len(preview) > 150 else preview
-        
-        # Date fallback from file
+
         if not date:
             mtime = os.path.getmtime(filepath)
             date = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
-        
+
         return title, preview, date
     except Exception as e:
         print(f"Error processing {filepath}: {e}")
@@ -90,8 +85,8 @@ def generate_readme_and_json():
 
     entries.sort(key=lambda x: x['date'], reverse=True)
 
-    # Generate README.md
-    readme = """# Today I Learned (TIL)
+    # Build README content
+    readme_content = """# Today I Learned (TIL)
 
 > A collection of things I learn every day across a variety of languages and technologies.
 
@@ -99,12 +94,12 @@ def generate_readme_and_json():
 
 """
     for entry in entries:
-        readme += f"### {entry['date']} - {entry['title']}\n\n"
-        readme += f"{entry['preview']}\n\n"
-        readme += f"[**See more...**]({entry['url']})\n\n"
-        readme += "---\n\n"
+        readme_content += f"### {entry['date']} - {entry['title']}\n\n"
+        readme_content += f"{entry['preview']}\n\n"
+        readme_content += f"[**See more...**]({entry['url']})\n\n"
+        readme_content += "---\n\n"
 
-    readme += f"""## Stats
+    readme_content += f"""## Stats
 
 - **Total entries:** {len(entries)}
 - **Last updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
@@ -114,13 +109,15 @@ def generate_readme_and_json():
 _This README is automatically generated from the markdown files in this repository._
 """
 
-    with open("README.md", "w", encoding="utf-8") as f:
-        f.write(readme)
-    
-    with open("posts.json", "w", encoding="utf-8") as f:
+    # Write README.md
+    with open('README.md', 'w', encoding='utf-8') as f:
+        f.write(readme_content)
+
+    # Write posts.json
+    with open('posts.json', 'w', encoding='utf-8') as f:
         json.dump(entries, f, indent=2)
 
-    print("README.md and posts.json generated.")
+    print("✅ README.md and posts.json generated successfully.")
 
 if __name__ == "__main__":
     generate_readme_and_json()
