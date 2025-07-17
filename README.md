@@ -36,10 +36,18 @@ Today I learned about GitHub Actions and how they can automate README updates. T
 
 ---
 
+### 2025-07-17 - Vim Commands Cheatsheet
+
+- **Normal Mode**: Default mode for navigation and commands - **Insert Mode**: For typing text (`i`, `a`, `o`) - **Visual Mode**: For selecting tex...
+
+[**See more...**](https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-tips.md)
+
+---
+
 ## Stats
 
-- **Total entries:** 4
-- **Last updated:** 2025-07-17 06:13:52
+- **Total entries:** 5
+- **Last updated:** 2025-07-17 10:29:23
 
 ---
 
