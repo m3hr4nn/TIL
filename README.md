@@ -4,7 +4,7 @@
 
 ## Recent Entries
 
-### 2025-07-16 - My update TIL Post
+### 2025-07-17 - My update TIL Post
 
 Today I learned about GitHub Actions and how they can automate README updates. This is really useful for maintaining documentation automatically.
 
@@ -12,7 +12,7 @@ Today I learned about GitHub Actions and how they can automate README updates. T
 
 ---
 
-### 2025-07-16 - Index Mgmt Elasticsearch
+### 2025-07-17 - Index Mgmt Elasticsearch
 
 ``` bash curl -u user:pass -XPUT 'localhost:9200/myindex/?pretty' ```
 
@@ -20,7 +20,7 @@ Today I learned about GitHub Actions and how they can automate README updates. T
 
 ---
 
-### 2025-07-16 - Basic Elasticsearch
+### 2025-07-17 - Basic Elasticsearch
 
 ``` bash curl -X<VERB> '<PROTOCOL>:<HOST>:<PORT>/<PATH>/<OPERATION_STRING>?<QUERY_STRING>' -d '<BODY>' ```
 
@@ -28,7 +28,7 @@ Today I learned about GitHub Actions and how they can automate README updates. T
 
 ---
 
-### 2025-07-16 - Effective Prompt Engineering for LLMs
+### 2025-07-17 - Effective Prompt Engineering for LLMs
 
 ```markdown Learning how to write better prompts for large language models to get more accurate and useful responses. Instead of: "Help me with Pyt...
 
@@ -39,7 +39,7 @@ Today I learned about GitHub Actions and how they can automate README updates. T
 ## Stats
 
 - **Total entries:** 4
-- **Last updated:** 2025-07-16 21:25:06
+- **Last updated:** 2025-07-17 06:13:52
 
 ---
 
