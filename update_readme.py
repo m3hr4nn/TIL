@@ -84,7 +84,33 @@ def generate_readme_and_json():
                 'filepath': clean_path
             })
 
-    entries.sort(key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d %H:%M'), reverse=True)
+    def parse_date_flexible(date_string):
+    """Parse date string with flexible format support"""
+    try:
+        # Try parsing with time first
+        return datetime.strptime(date_string, '%Y-%m-%d %H:%M')
+    except ValueError:
+        try:
+            # Fallback to date only
+            return datetime.strptime(date_string, '%Y-%m-%d')
+        except ValueError:
+            # If both fail, try other common formats
+            formats = [
+                '%Y-%m-%d %H:%M:%S',
+                '%m/%d/%Y',
+                '%d/%m/%Y',
+                '%Y/%m/%d'
+            ]
+            for fmt in formats:
+                try:
+                    return datetime.strptime(date_string, fmt)
+                except ValueError:
+                    continue
+            # If all formats fail, use current date as fallback
+            print(f"Warning: Could not parse date '{date_string}', using current date")
+            return datetime.now()
+
+entries.sort(key=lambda x: parse_date_flexible(x['date']), reverse=True)
 
     # Build README content
     readme_content = """# Today I Learned (TIL)
