@@ -1,67 +1,38 @@
-name: Update README (Debug)
+name: Generate CMS
 
 on:
-  workflow_dispatch:  # Manual trigger only for testing
+  push:
+    branches:
+      - main
+    paths:
+      - '**.md'
+      - 'generate_cms.py'
 
 jobs:
-  update-readme:
+  build:
     runs-on: ubuntu-latest
-    
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.x'
 
-      - name: Show repository structure
+      - name: Install dependencies
         run: |
-          echo "🔍 Repository structure:"
-          find . -type f -name "*.md" | head -20
-          echo ""
-          echo "📁 Directory tree:"
-          tree -a -L 3 || ls -la
+          pip install markdown
 
-      - name: Run debug script
+      - name: Generate CMS files
         run: |
-          echo "🚀 Running update script..."
-          python update_readme.py
+          python generate_cms.py
 
-      - name: Show generated files
+      - name: Commit and push changes
         run: |
-          echo "📄 Generated README.md (first 50 lines):"
-          head -50 README.md || echo "README.md not found"
-          echo ""
-          echo "📄 Generated posts.json (preview):"
-          head -20 posts.json || echo "posts.json not found"
-          echo ""
-          echo "📊 File sizes:"
-          ls -lh README.md posts.json || echo "Files not found"
-
-      - name: Commit changes
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          echo "📊 Current git status:"
-          git status
-          
-          echo "📝 Adding files..."
-          git add README.md posts.json
-          
-          echo "📊 Changes to commit:"
-          git diff --cached --stat
-          
-          if git diff --cached --quiet; then
-            echo "ℹ️ No changes to commit"
-          else
-            echo "✅ Committing changes..."
-            git commit -m "debug: auto-update README and posts.json with debug info"
-            git push
-            echo "🚀 Changes pushed!"
-          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html posts.json
+          git commit -m "Auto-generate CMS files"
+          git push
