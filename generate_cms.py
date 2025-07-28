@@ -1,7 +1,6 @@
 import os
 import json
 from datetime import datetime
-import markdown
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -73,19 +72,22 @@ def scan_posts():
     for category in os.listdir(BASE_DIR):
         category_path = os.path.join(BASE_DIR, category)
         if os.path.isdir(category_path) and not category.startswith('.'):
+            if category == ".github":
+                continue
             for file in os.listdir(category_path):
                 if file.endswith('.md'):
                     file_path = os.path.join(category_path, file)
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        content = f.read()
-                        posts.append({
-                            "category": category,
-                            "title": os.path.splitext(file)[0],
-                            "path": f"{category}/{file}",
-                            "updated": datetime.fromtimestamp(
-                                os.path.getmtime(file_path)
-                            ).isoformat()
-                        })
+                    posts.append({
+                        "category": category,
+                        "title": os.path.splitext(file)[0],
+                        "path": f"{category}/{file}",
+                        "updated": os.path.getmtime(file_path)
+                    })
+    # Sort posts by latest modified time
+    posts.sort(key=lambda x: x['updated'], reverse=True)
+    # Convert timestamps to ISO 8601
+    for post in posts:
+        post['updated'] = datetime.fromtimestamp(post['updated']).isoformat()
     return posts
 
 def generate_posts_json(posts):
@@ -95,7 +97,7 @@ def generate_posts_json(posts):
 def generate_index_html(posts):
     posts_list_html = "\n".join(
         [f"                <li><a href='{p['path']}'>{p['category']} - {p['title']}</a></li>"
-         for p in sorted(posts, key=lambda x: (x['category'], x['title']))]
+         for p in posts]
     )
 
     html = f"""<!DOCTYPE html>
