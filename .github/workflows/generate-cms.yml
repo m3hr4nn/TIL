@@ -1,0 +1,38 @@
+name: Generate CMS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.md'
+      - 'generate_cms.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install markdown
+
+      - name: Generate CMS files
+        run: |
+          python generate_cms.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html posts.json
+          git commit -m "Auto-generate CMS files"
+          git push
