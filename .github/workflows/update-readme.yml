@@ -4,53 +4,67 @@ on:
   push:
     paths:
       - '**/*.md'
+      - 'update_readme.py'
   schedule:
     - cron: '0 6 * * *'
-  workflow_dispatch:  # manual run
+  workflow_dispatch:
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     
-    # explicit permissions for writing to repository
     permissions:
       contents: write
       actions: read
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Latest version
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Explicit token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Fetch full history
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'  
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install python-frontmatter
 
       - name: Run README update script
-        run: python update_readme.py
-
-      - name: Check for changes
-        id: check_changes
         run: |
+          echo "🔍 Current working directory:"
+          pwd
+          echo "📁 Directory contents:"
+          ls -la
+          echo "📝 Running update script..."
+          python update_readme.py
+
+      - name: Check git status
+        run: |
+          echo "📊 Git status:"
+          git status
+          echo "📋 Git diff:"
+          git diff --name-only
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Add files
           git add README.md posts.json
+          
+          # Check if there are changes to commit
           if git diff --cached --quiet; then
-            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No changes to commit"
           else
-            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes detected, committing..."
+            git commit -m "chore: auto-update README and posts.json [skip ci]"
+            git push origin main
+            echo "🚀 Changes pushed successfully"
           fi
-
-      - name: Commit and push if changes
-        if: steps.check_changes.outputs.changes == 'true'
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: auto-update README and posts.json [skip ci]"
-          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
