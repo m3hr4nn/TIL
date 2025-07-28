@@ -1,13 +1,7 @@
-name: Update README
+name: Update README (Debug)
 
 on:
-  push:
-    paths:
-      - '**/*.md'
-      - 'update_readme.py'
-  schedule:
-    - cron: '0 6 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger only for testing
 
 jobs:
   update-readme:
@@ -15,56 +9,59 @@ jobs:
     
     permissions:
       contents: write
-      actions: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0  # Fetch full history
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Show repository structure
         run: |
-          pip install python-frontmatter
+          echo "🔍 Repository structure:"
+          find . -type f -name "*.md" | head -20
+          echo ""
+          echo "📁 Directory tree:"
+          tree -a -L 3 || ls -la
 
-      - name: Run README update script
+      - name: Run debug script
         run: |
-          echo "🔍 Current working directory:"
-          pwd
-          echo "📁 Directory contents:"
-          ls -la
-          echo "📝 Running update script..."
+          echo "🚀 Running update script..."
           python update_readme.py
 
-      - name: Check git status
+      - name: Show generated files
         run: |
-          echo "📊 Git status:"
-          git status
-          echo "📋 Git diff:"
-          git diff --name-only
+          echo "📄 Generated README.md (first 50 lines):"
+          head -50 README.md || echo "README.md not found"
+          echo ""
+          echo "📄 Generated posts.json (preview):"
+          head -20 posts.json || echo "posts.json not found"
+          echo ""
+          echo "📊 File sizes:"
+          ls -lh README.md posts.json || echo "Files not found"
 
-      - name: Commit and push changes
+      - name: Commit changes
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Add files
+          echo "📊 Current git status:"
+          git status
+          
+          echo "📝 Adding files..."
           git add README.md posts.json
           
-          # Check if there are changes to commit
+          echo "📊 Changes to commit:"
+          git diff --cached --stat
+          
           if git diff --cached --quiet; then
             echo "ℹ️ No changes to commit"
           else
-            echo "✅ Changes detected, committing..."
-            git commit -m "chore: auto-update README and posts.json [skip ci]"
-            git push origin main
-            echo "🚀 Changes pushed successfully"
+            echo "✅ Committing changes..."
+            git commit -m "debug: auto-update README and posts.json with debug info"
+            git push
+            echo "🚀 Changes pushed!"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
