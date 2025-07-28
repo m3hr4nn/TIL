@@ -2,67 +2,67 @@
     {
         "category": "Python",
         "title": "list-comprehensions",
-        "path": "Python/list-comprehensions.md",
-        "updated": "2025-07-28T20:26:05.822757"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Python/list-comprehensions.md",
+        "updated": "2025-07-28T20:31:19.319401"
     },
     {
         "category": "programming",
         "title": "test-post",
-        "path": "programming/test-post.md",
-        "updated": "2025-07-28T20:26:05.822757"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/test-post.md",
+        "updated": "2025-07-28T20:31:19.319401"
     },
     {
         "category": "programming",
         "title": "webapplication-building",
-        "path": "programming/webapplication-building.md",
-        "updated": "2025-07-28T20:26:05.822757"
-    },
-    {
-        "category": "JavaScript",
-        "title": "async-await",
-        "path": "JavaScript/async-await.md",
-        "updated": "2025-07-28T20:26:05.821758"
-    },
-    {
-        "category": "ELK",
-        "title": "index-mgmt-elasticsearch",
-        "path": "ELK/index-mgmt-elasticsearch.md",
-        "updated": "2025-07-28T20:26:05.821758"
-    },
-    {
-        "category": "ELK",
-        "title": "basic-elasticsearch",
-        "path": "ELK/basic-elasticsearch.md",
-        "updated": "2025-07-28T20:26:05.821758"
-    },
-    {
-        "category": "Hardware",
-        "title": "asus-xl550-bluetooth-tshoot",
-        "path": "Hardware/asus-xl550-bluetooth-tshoot.md",
-        "updated": "2025-07-28T20:26:05.821758"
-    },
-    {
-        "category": "AI",
-        "title": "prompt-engineering-tips",
-        "path": "AI/prompt-engineering-tips.md",
-        "updated": "2025-07-28T20:26:05.821758"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/webapplication-building.md",
+        "updated": "2025-07-28T20:31:19.319401"
     },
     {
         "category": "Linux",
         "title": "vim-tips",
-        "path": "Linux/vim-tips.md",
-        "updated": "2025-07-28T20:26:05.821758"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-tips.md",
+        "updated": "2025-07-28T20:31:19.319401"
     },
     {
         "category": "Linux",
         "title": "vim-commands",
-        "path": "Linux/vim-commands.md",
-        "updated": "2025-07-28T20:26:05.821758"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-commands.md",
+        "updated": "2025-07-28T20:31:19.319401"
     },
     {
         "category": "Linux",
         "title": "powerpath_ultrapath_multipath_hdlm",
-        "path": "Linux/powerpath_ultrapath_multipath_hdlm.md",
-        "updated": "2025-07-28T20:26:05.821758"
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/powerpath_ultrapath_multipath_hdlm.md",
+        "updated": "2025-07-28T20:31:19.319401"
+    },
+    {
+        "category": "JavaScript",
+        "title": "async-await",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/JavaScript/async-await.md",
+        "updated": "2025-07-28T20:31:19.318401"
+    },
+    {
+        "category": "ELK",
+        "title": "index-mgmt-elasticsearch",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/index-mgmt-elasticsearch.md",
+        "updated": "2025-07-28T20:31:19.318401"
+    },
+    {
+        "category": "ELK",
+        "title": "basic-elasticsearch",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/basic-elasticsearch.md",
+        "updated": "2025-07-28T20:31:19.318401"
+    },
+    {
+        "category": "Hardware",
+        "title": "asus-xl550-bluetooth-tshoot",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/asus-xl550-bluetooth-tshoot.md",
+        "updated": "2025-07-28T20:31:19.318401"
+    },
+    {
+        "category": "AI",
+        "title": "prompt-engineering-tips",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/AI/prompt-engineering-tips.md",
+        "updated": "2025-07-28T20:31:19.318401"
     }
 ]
