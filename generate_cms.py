@@ -136,6 +136,7 @@ def generate_index_html(posts, categories):
     <footer>
         <p>&copy; 2025 <a href="https://m3hr4n.com">Mehran Naderizadeh</a> - Built with ♥</p>
     </footer>
+    <script src="wordcloud.js"></script>
 </body>
 </html>
 """
