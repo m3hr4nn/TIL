@@ -99,13 +99,14 @@ def generate_css_wordcloud(categories):
         return ""
     
     word_freq = Counter(categories)
-    max_count = max(word_freq.values())
+    max_count = max(word_freq.values()) if word_freq else 1
     
     css_words = []
     for word, count in word_freq.items():
-        # Scale font size based on frequency (12px to 32px)
-        font_size = 12 + (count / max_count) * 20
-        css_words.append(f'<span style="font-size: {font_size}px; margin: 0 8px; opacity: {0.6 + (count / max_count) * 0.4};">{word}</span>')
+        # Scale font size based on frequency (14px to 28px)
+        font_size = 14 + (count / max_count) * 14
+        opacity = 0.7 + (count / max_count) * 0.3
+        css_words.append(f'<span class="cloud-word" style="font-size: {font_size}px; opacity: {opacity};">{word}</span>')
     
     return ' '.join(css_words)
 
@@ -130,11 +131,27 @@ def generate_index_html(posts, categories, wordcloud_base64):
     
     # Generate word cloud HTML
     if wordcloud_base64:
-        wordcloud_html = f'<div class="wordcloud"><img src="data:image/png;base64,{wordcloud_base64}" alt="Categories Word Cloud" /></div>'
+        wordcloud_html = f'''
+        <div class="wordcloud">
+            <img src="data:image/png;base64,{wordcloud_base64}" alt="Categories Word Cloud" />
+        </div>'''
     else:
         # Fallback to CSS word cloud
         css_wordcloud = generate_css_wordcloud(categories)
-        wordcloud_html = f'<div class="wordcloud css-wordcloud">{css_wordcloud}</div>' if css_wordcloud else ""
+        if css_wordcloud:
+            wordcloud_html = f'''
+        <div class="wordcloud css-wordcloud">
+            <div class="cloud-container">
+                {css_wordcloud}
+            </div>
+        </div>'''
+        else:
+            wordcloud_html = '''
+        <div class="wordcloud">
+            <div class="cloud-placeholder">
+                <span>📚 Categories: {}</span>
+            </div>
+        </div>'''.format(' • '.join(set(categories)) if categories else 'Loading...')
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
