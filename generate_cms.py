@@ -11,29 +11,42 @@ def extract_date_from_filename(filename):
     date_pattern = r'^(\d{8})'
     match = re.match(date_pattern, filename)
     if match:
+        date_str = match.group(1)
         try:
-            return datetime.strptime(match.group(1), '%Y%m%d').timestamp()
+            date_obj = datetime.strptime(date_str, '%Y%m%d')
+            timestamp = date_obj.timestamp()
+            return timestamp
         except ValueError:
             pass
     return None
 
 def scan_posts():
     posts = []
+    debug_info = []
+    
     for category in os.listdir(BASE_DIR):
         category_path = os.path.join(BASE_DIR, category)
         if os.path.isdir(category_path) and not category.startswith('.'):
             if category == ".github":
                 continue
+            
             for file in os.listdir(category_path):
                 if file.endswith('.md'):
                     file_path = os.path.join(category_path, file)
                     filename_without_ext = os.path.splitext(file)[0]
+                    
+                    # Debug: Log what we're processing
+                    debug_info.append(f"Processing: {category}/{file}")
+                    debug_info.append(f"  Filename without ext: '{filename_without_ext}'")
                     
                     # Extract date from filename (YYYYMMDD format)
                     file_date = extract_date_from_filename(filename_without_ext)
                     if file_date is None:
                         # Fallback to file modification time if no date in filename
                         file_date = os.path.getmtime(file_path)
+                        debug_info.append(f"  No date found, using file mtime: {datetime.fromtimestamp(file_date)}")
+                    else:
+                        debug_info.append(f"  Found date: {datetime.fromtimestamp(file_date)}")
                     
                     posts.append({
                         "category": category,
@@ -48,6 +61,16 @@ def scan_posts():
     # Convert timestamps to ISO 8601
     for post in posts:
         post['updated'] = datetime.fromtimestamp(post['updated']).isoformat()
+    
+    # Write debug info to a file
+    with open(os.path.join(BASE_DIR, 'debug.txt'), 'w', encoding='utf-8') as f:
+        f.write("=== DEBUG INFO ===\n")
+        f.write(f"Total posts found: {len(posts)}\n\n")
+        for info in debug_info:
+            f.write(info + "\n")
+        f.write("\n=== FINAL SORT ORDER ===\n")
+        for i, post in enumerate(posts):
+            f.write(f"{i+1}. {post['category']}/{post['title']} - {post['updated']}\n")
     
     return posts
 
@@ -94,7 +117,7 @@ def main():
     posts = scan_posts()
     generate_posts_json(posts)
     generate_index_html(posts)
-    print("CMS updated: index.html and posts.json")
+    print("CMS updated: index.html, posts.json, and debug.txt")
 
 if __name__ == "__main__":
     main()
