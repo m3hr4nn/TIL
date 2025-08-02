@@ -1,28 +1,21 @@
 import os
 import json
-import subprocess
+import re
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 GITHUB_REPO_URL = "https://github.com/m3hr4nn/TIL/blob/main"
 
-def get_file_git_date(file_path):
-    """Get the last commit date for a file using git log"""
-    try:
-        # Get the last commit date for this file
-        result = subprocess.run([
-            'git', 'log', '-1', '--format=%ct', '--', file_path
-        ], capture_output=True, text=True, cwd=BASE_DIR)
-        
-        if result.returncode == 0 and result.stdout.strip():
-            timestamp = int(result.stdout.strip())
-            return timestamp
-        else:
-            # Fallback to file modification time if git fails
-            return os.path.getmtime(file_path)
-    except Exception:
-        # Fallback to file modification time if git command fails
-        return os.path.getmtime(file_path)
+def extract_date_from_filename(filename):
+    """Extract date from filename if it starts with YYYYMMDD format"""
+    date_pattern = r'^(\d{8})'
+    match = re.match(date_pattern, filename)
+    if match:
+        try:
+            return datetime.strptime(match.group(1), '%Y%m%d').timestamp()
+        except ValueError:
+            pass
+    return None
 
 def scan_posts():
     posts = []
@@ -34,16 +27,22 @@ def scan_posts():
             for file in os.listdir(category_path):
                 if file.endswith('.md'):
                     file_path = os.path.join(category_path, file)
-                    relative_path = os.path.relpath(file_path, BASE_DIR)
+                    filename_without_ext = os.path.splitext(file)[0]
+                    
+                    # Extract date from filename (YYYYMMDD format)
+                    file_date = extract_date_from_filename(filename_without_ext)
+                    if file_date is None:
+                        # Fallback to file modification time if no date in filename
+                        file_date = os.path.getmtime(file_path)
                     
                     posts.append({
                         "category": category,
-                        "title": os.path.splitext(file)[0],
+                        "title": filename_without_ext,
                         "path": f"{GITHUB_REPO_URL}/{category}/{file}",
-                        "updated": get_file_git_date(relative_path)
+                        "updated": file_date
                     })
     
-    # Sort posts by latest modified time (newest first)
+    # Sort posts by date (newest first)
     posts.sort(key=lambda x: x['updated'], reverse=True)
     
     # Convert timestamps to ISO 8601
