@@ -114,10 +114,19 @@ def generate_index_html(posts):
         f.write(html)
 
 def main():
-    posts = scan_posts()
-    generate_posts_json(posts)
-    generate_index_html(posts)
-    print("CMS updated: index.html, posts.json, and debug.txt")
+    try:
+        posts = scan_posts()
+        generate_posts_json(posts)
+        generate_index_html(posts)
+        print("CMS updated: index.html, posts.json, and debug.txt")
+    except Exception as e:
+        # Write error to debug file
+        with open(os.path.join(BASE_DIR, 'debug.txt'), 'w', encoding='utf-8') as f:
+            f.write(f"ERROR: {str(e)}\n")
+            import traceback
+            f.write(traceback.format_exc())
+        print(f"Error occurred: {e}")
+        raise
 
 if __name__ == "__main__":
     main()
