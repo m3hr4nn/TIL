@@ -36,7 +36,7 @@ nmcli connection show
 
 ## Method 1: Using nmcli (Command Line)
 
-### Step 1: Remove Existing Connections
+### Step 1: Remove Existing Connections (optional)
 ```bash
 # List current connections
 nmcli connection show
@@ -130,7 +130,7 @@ ping -c 4 8.8.8.8
 
 ## Method 2: Using nmtui (Text User Interface)
 
-### Step 1: Launch nmtui
+### Step 1: Launch nmtui z
 ```bash
 sudo nmtui
 ```
