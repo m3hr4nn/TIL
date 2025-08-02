@@ -1,9 +1,28 @@
 import os
 import json
+import subprocess
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 GITHUB_REPO_URL = "https://github.com/m3hr4nn/TIL/blob/main"
+
+def get_file_git_date(file_path):
+    """Get the last commit date for a file using git log"""
+    try:
+        # Get the last commit date for this file
+        result = subprocess.run([
+            'git', 'log', '-1', '--format=%ct', '--', file_path
+        ], capture_output=True, text=True, cwd=BASE_DIR)
+        
+        if result.returncode == 0 and result.stdout.strip():
+            timestamp = int(result.stdout.strip())
+            return timestamp
+        else:
+            # Fallback to file modification time if git fails
+            return os.path.getmtime(file_path)
+    except Exception:
+        # Fallback to file modification time if git command fails
+        return os.path.getmtime(file_path)
 
 def scan_posts():
     posts = []
@@ -15,17 +34,22 @@ def scan_posts():
             for file in os.listdir(category_path):
                 if file.endswith('.md'):
                     file_path = os.path.join(category_path, file)
+                    relative_path = os.path.relpath(file_path, BASE_DIR)
+                    
                     posts.append({
                         "category": category,
                         "title": os.path.splitext(file)[0],
                         "path": f"{GITHUB_REPO_URL}/{category}/{file}",
-                        "updated": os.path.getmtime(file_path)
+                        "updated": get_file_git_date(relative_path)
                     })
-    # Sort posts by latest modified time
+    
+    # Sort posts by latest modified time (newest first)
     posts.sort(key=lambda x: x['updated'], reverse=True)
+    
     # Convert timestamps to ISO 8601
     for post in posts:
         post['updated'] = datetime.fromtimestamp(post['updated']).isoformat()
+    
     return posts
 
 def generate_posts_json(posts):
