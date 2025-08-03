@@ -3,90 +3,96 @@
         "category": "Python",
         "title": "list-comprehensions",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Python/list-comprehensions.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "updated": "2025-08-03T18:07:13.560845"
     },
     {
         "category": "programming",
         "title": "test-post",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/test-post.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "updated": "2025-08-03T18:07:13.560845"
     },
     {
         "category": "programming",
         "title": "webapplication-building",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/webapplication-building.md",
-        "updated": "2025-08-02T18:54:24.810157"
-    },
-    {
-        "category": "Linux",
-        "title": "useradd-userdel-logs",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/useradd-userdel-logs.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "updated": "2025-08-03T18:07:13.560845"
     },
     {
         "category": "Linux",
         "title": "vim-tips",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-tips.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "updated": "2025-08-03T18:07:13.560845"
     },
     {
         "category": "Linux",
         "title": "vim-commands",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-commands.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "updated": "2025-08-03T18:07:13.560845"
     },
     {
-        "category": "Linux",
-        "title": "Network Bonding Method of Procedure",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/Network Bonding Method of Procedure.md",
-        "updated": "2025-08-02T18:54:24.810157"
-    },
-    {
-        "category": "Linux",
-        "title": "powerpath_ultrapath_multipath_hdlm",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/powerpath_ultrapath_multipath_hdlm.md",
-        "updated": "2025-08-02T18:54:24.810157"
+        "category": "Git",
+        "title": "20250803-Git-Squash-Guide",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Git/20250803-Git-Squash-Guide.md",
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "JavaScript",
         "title": "async-await",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/JavaScript/async-await.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "ELK",
         "title": "index-mgmt-elasticsearch",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/index-mgmt-elasticsearch.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "ELK",
         "title": "basic-elasticsearch",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/basic-elasticsearch.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "Hardware",
         "title": "RHEL 8.10 Installation Guide for Fujitsu Primergy RX2540 M5",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/RHEL 8.10 Installation Guide for Fujitsu Primergy RX2540 M5.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "Hardware",
         "title": "HPE-Proliant-Comparison",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/HPE-Proliant-Comparison.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "Hardware",
         "title": "asus-xl550-bluetooth-tshoot",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/asus-xl550-bluetooth-tshoot.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.559845"
+    },
+    {
+        "category": "Linux",
+        "title": "useradd-userdel-logs",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/useradd-userdel-logs.md",
+        "updated": "2025-08-03T18:07:13.559845"
+    },
+    {
+        "category": "Linux",
+        "title": "Network Bonding Method of Procedure",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/Network Bonding Method of Procedure.md",
+        "updated": "2025-08-03T18:07:13.559845"
+    },
+    {
+        "category": "Linux",
+        "title": "powerpath_ultrapath_multipath_hdlm",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/powerpath_ultrapath_multipath_hdlm.md",
+        "updated": "2025-08-03T18:07:13.559845"
     },
     {
         "category": "AI",
         "title": "prompt-engineering-tips",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/AI/prompt-engineering-tips.md",
-        "updated": "2025-08-02T18:54:24.809157"
+        "updated": "2025-08-03T18:07:13.558845"
     }
 ]
