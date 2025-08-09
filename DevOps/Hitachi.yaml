@@ -1,0 +1,466 @@
+# Hitachi VSP 5500 CSI Driver Configuration for OpenShift with FC Storage
+# This configuration provides production-ready settings for enterprise environments
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hitachi-vsp-secret
+  namespace: hitachi-csi-driver
+type: Opaque
+data:
+  # Base64 encoded credentials for VSP 5500
+  username: <BASE64_ENCODED_USERNAME>
+  password: <BASE64_ENCODED_PASSWORD>
+  # Management IP addresses (Base64 encoded)
+  management_ip1: <BASE64_ENCODED_IP1>
+  management_ip2: <BASE64_ENCODED_IP2>
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hitachi-vsp-config
+  namespace: hitachi-csi-driver
+data:
+  driver-config.yaml: |
+    # VSP 5500 Configuration
+    storageSystemId: "VSP5500-SERIAL-NUMBER"
+    managementIPs:
+      - "192.168.1.100"  # Primary management IP
+      - "192.168.1.101"  # Secondary management IP for HA
+    
+    # Fibre Channel Configuration
+    connectionType: "fc"
+    
+    # Pool Configuration - adjust according to your VSP 5500 setup
+    pools:
+      - poolId: 0
+        poolName: "DP_POOL_01"
+        raidLevel: "RAID5"
+        diskType: "SSD"
+      - poolId: 1
+        poolName: "DP_POOL_02"
+        raidLevel: "RAID6"
+        diskType: "SAS"
+    
+    # Host Group Configuration for FC
+    hostGroups:
+      - hostGroupId: 0
+        hostGroupName: "OpenShift_Cluster_HG"
+        portIds: ["CL1-A", "CL2-A", "CL1-B", "CL2-B"]
+    
+    # Volume provisioning defaults
+    defaultVolumeSize: "100Gi"
+    defaultPoolId: 0
+    
+    # Performance and reliability settings
+    enableSnapshotFeature: true
+    enableCloneFeature: true
+    enableVolumeExpansion: true
+    enableTopology: true
+    
+    # Timeout and retry settings
+    requestTimeout: "300s"
+    maxRetries: 3
+    retryInterval: "30s"
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hitachi-vsp-fc-fast
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.hitachi.com
+parameters:
+  # VSP 5500 specific parameters
+  storageSystemId: "VSP5500-SERIAL-NUMBER"
+  poolId: "0"  # SSD pool for high performance
+  hostGroupName: "OpenShift_Cluster_HG"
+  
+  # Volume characteristics
+  csi.storage.k8s.io/fstype: "ext4"
+  volumeType: "DP"  # Dynamic Provisioning
+  
+  # Performance tier
+  tieringPolicy: "All Flash"
+  
+  # Data protection features
+  enableCompression: "true"
+  enableDeduplication: "true"
+  
+  # QoS settings
+  iops: "10000"
+  throughput: "500MB"
+
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hitachi-vsp-fc-standard
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: csi.hitachi.com
+parameters:
+  storageSystemId: "VSP5500-SERIAL-NUMBER"
+  poolId: "1"  # SAS pool for standard performance
+  hostGroupName: "OpenShift_Cluster_HG"
+  
+  csi.storage.k8s.io/fstype: "ext4"
+  volumeType: "DP"
+  
+  # Standard tier settings
+  tieringPolicy: "Mixed"
+  enableCompression: "true"
+  enableDeduplication: "false"
+  
+  # Moderate QoS
+  iops: "5000"
+  throughput: "250MB"
+
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: hitachi-vsp-fc-archive
+provisioner: csi.hitachi.com
+parameters:
+  storageSystemId: "VSP5500-SERIAL-NUMBER"
+  poolId: "1"
+  hostGroupName: "OpenShift_Cluster_HG"
+  
+  csi.storage.k8s.io/fstype: "ext4"
+  volumeType: "DP"
+  
+  # Archive tier for long-term storage
+  tieringPolicy: "Archive"
+  enableCompression: "true"
+  enableDeduplication: "true"
+  
+  # Low QoS for archive workloads
+  iops: "1000"
+  throughput: "100MB"
+
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain  # Retain for archive data
+
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: hitachi-vsp-snapshot-class
+driver: csi.hitachi.com
+parameters:
+  storageSystemId: "VSP5500-SERIAL-NUMBER"
+  snapshotType: "ShadowImage"  # VSP 5500 snapshot technology
+  retentionPolicy: "Delete"
+  
+deletionPolicy: Delete
+
+---
+# CSI Driver Deployment Configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hitachi-vsp-csi-controller
+  namespace: hitachi-csi-driver
+spec:
+  replicas: 2  # HA configuration
+  selector:
+    matchLabels:
+      app: hitachi-vsp-csi-controller
+  template:
+    metadata:
+      labels:
+        app: hitachi-vsp-csi-controller
+    spec:
+      serviceAccountName: hitachi-csi-controller-sa
+      containers:
+      - name: csi-provisioner
+        image: k8s.gcr.io/sig-storage/csi-provisioner:v3.3.0
+        args:
+          - "--csi-address=/var/lib/csi/sockets/pluginproxy/csi.sock"
+          - "--v=2"
+          - "--timeout=300s"
+          - "--enable-leader-election"
+          - "--leader-election-type=leases"
+          - "--feature-gates=Topology=true"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+        
+      - name: csi-attacher
+        image: k8s.gcr.io/sig-storage/csi-attacher:v4.0.0
+        args:
+          - "--v=2"
+          - "--csi-address=/var/lib/csi/sockets/pluginproxy/csi.sock"
+          - "--timeout=300s"
+          - "--leader-election"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+          
+      - name: csi-snapshotter
+        image: k8s.gcr.io/sig-storage/csi-snapshotter:v6.1.0
+        args:
+          - "--v=2"
+          - "--csi-address=/var/lib/csi/sockets/pluginproxy/csi.sock"
+          - "--timeout=300s"
+          - "--leader-election"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+          
+      - name: csi-resizer
+        image: k8s.gcr.io/sig-storage/csi-resizer:v1.6.0
+        args:
+          - "--v=2"
+          - "--csi-address=/var/lib/csi/sockets/pluginproxy/csi.sock"
+          - "--timeout=300s"
+          - "--leader-election"
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+          
+      - name: hitachi-vsp-driver
+        image: hitachi/vsp-csi-driver:v2.8.0  # Use latest stable version
+        args:
+          - "--endpoint=/var/lib/csi/sockets/pluginproxy/csi.sock"
+          - "--nodeid=$(NODE_ID)"
+          - "--config-file=/etc/hitachi-config/driver-config.yaml"
+          - "--log-level=info"
+          - "--enable-leader-election"
+        env:
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: socket-dir
+          mountPath: /var/lib/csi/sockets/pluginproxy/
+        - name: config-volume
+          mountPath: /etc/hitachi-config
+        - name: secret-volume
+          mountPath: /etc/hitachi-secret
+          readOnly: true
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+            
+      volumes:
+      - name: socket-dir
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: hitachi-vsp-config
+      - name: secret-volume
+        secret:
+          secretName: hitachi-vsp-secret
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: hitachi-vsp-csi-node
+  namespace: hitachi-csi-driver
+spec:
+  selector:
+    matchLabels:
+      app: hitachi-vsp-csi-node
+  template:
+    metadata:
+      labels:
+        app: hitachi-vsp-csi-node
+    spec:
+      serviceAccountName: hitachi-csi-node-sa
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: csi-node-driver-registrar
+        image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.6.2
+        args:
+          - "--v=2"
+          - "--csi-address=/csi/csi.sock"
+          - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.hitachi.com/csi.sock"
+        volumeMounts:
+        - name: plugin-dir
+          mountPath: /csi/
+        - name: registration-dir
+          mountPath: /registration/
+          
+      - name: hitachi-vsp-driver
+        image: hitachi/vsp-csi-driver:v2.8.0
+        args:
+          - "--endpoint=/csi/csi.sock"
+          - "--nodeid=$(NODE_ID)"
+          - "--config-file=/etc/hitachi-config/driver-config.yaml"
+          - "--log-level=info"
+        env:
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["SYS_ADMIN"]
+          allowPrivilegeEscalation: true
+        volumeMounts:
+        - name: plugin-dir
+          mountPath: /csi
+        - name: kubelet-dir
+          mountPath: /var/lib/kubelet
+          mountPropagation: "Bidirectional"
+        - name: device-dir
+          mountPath: /dev
+        - name: config-volume
+          mountPath: /etc/hitachi-config
+        - name: secret-volume
+          mountPath: /etc/hitachi-secret
+          readOnly: true
+        - name: sys-fs
+          mountPath: /sys/fs
+          mountPropagation: "Bidirectional"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+            
+      volumes:
+      - name: kubelet-dir
+        hostPath:
+          path: /var/lib/kubelet
+          type: Directory
+      - name: plugin-dir
+        hostPath:
+          path: /var/lib/kubelet/plugins/csi.hitachi.com
+          type: DirectoryOrCreate
+      - name: registration-dir
+        hostPath:
+          path: /var/lib/kubelet/plugins_registry/
+          type: DirectoryOrCreate
+      - name: device-dir
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: sys-fs
+        hostPath:
+          path: /sys/fs
+          type: Directory
+      - name: config-volume
+        configMap:
+          name: hitachi-vsp-config
+      - name: secret-volume
+        secret:
+          secretName: hitachi-vsp-secret
+
+---
+# Service Account and RBAC Configuration
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hitachi-csi-controller-sa
+  namespace: hitachi-csi-driver
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hitachi-csi-node-sa
+  namespace: hitachi-csi-driver
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hitachi-csi-provisioner-role
+rules:
+- apiGroups: [""]
+  resources: ["persistentvolumes"]
+  verbs: ["get", "list", "watch", "create", "delete"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["get", "list", "watch", "update"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["list", "watch", "create", "update", "patch"]
+- apiGroups: ["snapshot.storage.k8s.io"]
+  resources: ["volumesnapshots"]
+  verbs: ["get", "list"]
+- apiGroups: ["snapshot.storage.k8s.io"]
+  resources: ["volumesnapshotcontents"]
+  verbs: ["create", "get", "list", "watch", "update", "delete", "patch"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["csinodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["coordination.k8s.io"]
+  resources: ["leases"]
+  verbs: ["get", "watch", "list", "delete", "update", "create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hitachi-csi-provisioner-binding
+subjects:
+- kind: ServiceAccount
+  name: hitachi-csi-controller-sa
+  namespace: hitachi-csi-driver
+roleRef:
+  kind: ClusterRole
+  name: hitachi-csi-provisioner-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Example PVC using the storage class
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hitachi-vsp-pvc-example
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: hitachi-vsp-fc-standard
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+# Monitoring and Alerting Configuration
+apiVersion: v1
+kind: Service
+metadata:
+  name: hitachi-csi-metrics
+  namespace: hitachi-csi-driver
+  labels:
+    app: hitachi-vsp-csi-controller
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: hitachi-vsp-csi-controller
