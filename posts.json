@@ -3,234 +3,240 @@
         "category": "SCM",
         "title": "20250816 - Guide",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/SCM/20250816 - Guide.md",
-        "updated": "2025-10-28T17:01:14.699367"
+        "updated": "2025-10-28T17:24:32.895440"
     },
     {
         "category": "SCM",
         "title": "20250816 - Farsi Guide",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/SCM/20250816 - Farsi Guide.md",
-        "updated": "2025-10-28T17:01:14.699367"
+        "updated": "2025-10-28T17:24:32.895440"
     },
     {
         "category": "programming",
         "title": "test-post",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/test-post.md",
-        "updated": "2025-10-28T17:01:14.699367"
+        "updated": "2025-10-28T17:24:32.895440"
     },
     {
         "category": "programming",
         "title": "webapplication-building",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/programming/webapplication-building.md",
-        "updated": "2025-10-28T17:01:14.699367"
+        "updated": "2025-10-28T17:24:32.895440"
     },
     {
         "category": "Linux",
         "title": "vim-commands",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-commands.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Linux",
         "title": "useradd-userdel-logs",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/useradd-userdel-logs.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Linux",
         "title": "powerpath_ultrapath_multipath_hdlm",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/powerpath_ultrapath_multipath_hdlm.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Linux",
         "title": "Network Bonding Method of Procedure",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/Network Bonding Method of Procedure.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Linux",
         "title": "vim-tips",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Linux/vim-tips.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Python",
         "title": "list-comprehensions",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Python/list-comprehensions.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "JavaScript",
         "title": "async-await",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/JavaScript/async-await.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Hardware",
         "title": "asus-xl550-bluetooth-tshoot",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/asus-xl550-bluetooth-tshoot.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Hardware",
         "title": "RHEL 8.10 Installation Guide for Fujitsu Primergy RX2540 M5",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/RHEL 8.10 Installation Guide for Fujitsu Primergy RX2540 M5.md",
-        "updated": "2025-10-28T17:01:14.698367"
+        "updated": "2025-10-28T17:24:32.894440"
     },
     {
         "category": "Git",
         "title": "20250803-Git-Squash-Guide",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Git/20250803-Git-Squash-Guide.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "DevOps",
         "title": "20250811 - air-gapped environments",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/DevOps/20250811 - air-gapped environments.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "DevOps",
         "title": "20250809 - Hitachi VSP 5500 OpenShift CSI Driver Configuration Guide",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/DevOps/20250809 - Hitachi VSP 5500 OpenShift CSI Driver Configuration Guide.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "ELK",
         "title": "basic-elasticsearch",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/basic-elasticsearch.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "ELK",
         "title": "index-mgmt-elasticsearch",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/ELK/index-mgmt-elasticsearch.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "Hardware",
         "title": "HPE-Proliant-Comparison",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/HPE-Proliant-Comparison.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "Hardware",
         "title": "20250809 - OS installation on batch of servers",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/Hardware/20250809 - OS installation on batch of servers.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-WCS-WMS",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-WCS-WMS.md",
-        "updated": "2025-10-28T17:01:14.697367"
+        "updated": "2025-10-28T17:24:32.893440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-TLDR",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-TLDR.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Python",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Python.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Redis",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Redis.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Rundeck",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Rundeck.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-RESTAPI",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-RESTAPI.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Powershell",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Powershell.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-MCSE-2019",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-MCSE-2019.md",
-        "updated": "2025-10-28T17:01:14.696367"
-    },
-    {
-        "category": "CheatSheets",
-        "title": "20251028-Linux",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Linux.md",
-        "updated": "2025-10-28T17:01:14.696367"
+        "updated": "2025-10-28T17:24:32.892440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Kubernetes",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Kubernetes.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
-        "title": "20251028-ApacheAirflow",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-ApacheAirflow.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "title": "20251028-Editors",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Editors.md",
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-GCP-PSQL",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-GCP-PSQL.md",
-        "updated": "2025-10-28T17:01:14.695367"
-    },
-    {
-        "category": "CheatSheets",
-        "title": "20251028-CyberSecurity",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-CyberSecurity.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Elasticsearch",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Elasticsearch.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-Git-Gitlab",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Git-Gitlab.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
-        "title": "20251028-Docker",
-        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Docker.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "title": "20251028-Linux",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Linux.md",
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "CheatSheets",
         "title": "20251028-GraphQL",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-GraphQL.md",
-        "updated": "2025-10-28T17:01:14.695367"
+        "updated": "2025-10-28T17:24:32.891440"
     },
     {
         "category": "AI",
         "title": "20250902 - learning-context-document",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/AI/20250902 - learning-context-document.md",
-        "updated": "2025-10-28T17:01:14.694367"
+        "updated": "2025-10-28T17:24:32.890440"
     },
     {
         "category": "AI",
         "title": "prompt-engineering-tips",
         "path": "https://github.com/m3hr4nn/TIL/blob/main/AI/prompt-engineering-tips.md",
-        "updated": "2025-10-28T17:01:14.694367"
+        "updated": "2025-10-28T17:24:32.890440"
+    },
+    {
+        "category": "CheatSheets",
+        "title": "20251028-ApacheAirflow",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-ApacheAirflow.md",
+        "updated": "2025-10-28T17:24:32.890440"
+    },
+    {
+        "category": "CheatSheets",
+        "title": "20251028-CyberSecurity",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-CyberSecurity.md",
+        "updated": "2025-10-28T17:24:32.890440"
+    },
+    {
+        "category": "CheatSheets",
+        "title": "20251028-Docker",
+        "path": "https://github.com/m3hr4nn/TIL/blob/main/CheatSheets/20251028-Docker.md",
+        "updated": "2025-10-28T17:24:32.890440"
     }
 ]
